@@ -8,9 +8,9 @@ import (
 )
 
 type Config struct {
-	Limit        int `envconfig:"LIMIT"`
-	TimeCooldown int `envconfig:"TIME_COOLDOWN"`
-	TimeLimit    int `envconfig:"TIME_LIMIT"`
+	Prefix       int8 `envconfig:"PREFIX"`
+	Limit        int  `envconfig:"LIMIT"`
+	TimeCooldown int  `envconfig:"TIME_COOLDOWN"`
 }
 
 func New() (*Config, error) {

@@ -14,7 +14,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	ipParser := ipparser.New(24)
+	ipParser := ipparser.New(cfg.Prefix)
 
 	rate := ratelimiter.New(ipParser, *cfg)
 	rate.Run()

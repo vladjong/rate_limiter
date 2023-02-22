@@ -31,10 +31,7 @@ func (s *service) getVisitor(ip string) bool {
 		return true
 	}
 	if v.limit == s.cfg.Limit {
-		if !v.cooldown {
-			v.cooldown = true
-			v.lastSeen = time.Now()
-		}
+		v.lastSeen = time.Now()
 		return false
 	}
 	v.limit++
@@ -45,14 +42,8 @@ func (s *service) cleanupVisitors() {
 	for {
 		s.mu.Lock()
 		for _, v := range s.visitors {
-			if v.cooldown && time.Since(v.lastSeen) > time.Duration(s.cfg.TimeCooldown)*time.Minute {
-				v.lastSeen = time.Now()
-				v.limit = 0
-				v.cooldown = false
-			} else if v.cooldown && time.Since(v.lastSeen) > time.Duration(s.cfg.TimeLimit)*time.Minute {
-				v.lastSeen = time.Now()
-				v.limit = 0
-				v.cooldown = false
+			if time.Since(v.lastSeen) > time.Duration(s.cfg.TimeCooldown)*time.Second {
+				freeVisitor(v)
 			}
 		}
 		s.mu.Unlock()
