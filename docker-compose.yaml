@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+
+  rate_limiter:
+    container_name: rate_limiter
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    restart: always

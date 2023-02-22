@@ -1,6 +1,7 @@
 package ratelimiter
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 )
@@ -59,6 +60,7 @@ func (s *service) cleanupVisitors() {
 		s.mu.Lock()
 		for _, v := range s.visitors {
 			// проверка на последний запрос к сервису
+			fmt.Println(time.Since(v.lastSeen))
 			if time.Since(v.lastSeen) > time.Duration(s.cfg.TimeCooldown)*time.Minute {
 				freeVisitor(v)
 			}

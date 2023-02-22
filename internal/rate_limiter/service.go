@@ -1,6 +1,8 @@
 package ratelimiter
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"sync"
 
@@ -33,8 +35,19 @@ func (s *service) Run() {
 	r.Use(middleware.Logger)
 	// middleware для ограничения количества запросов
 	r.Use(s.limit)
+
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("PING-PONG"))
 	})
-	http.ListenAndServe(":3000", r)
+
+	r.Get("/refresh", s.Refresh)
+
+	httpServer := http.Server{
+		Addr:    fmt.Sprintf("0.0.0.0:%d", 8080),
+		Handler: r,
+	}
+
+	if err := httpServer.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatal(err)
+	}
 }
