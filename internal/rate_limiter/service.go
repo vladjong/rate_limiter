@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	"github.com/vladjong/rate_limiter/internal/config"
 	ipparser "github.com/vladjong/rate_limiter/internal/ip_parser"
 )
 
@@ -13,12 +14,14 @@ type service struct {
 	ipParser ipparser.IpParser
 	visitors (map[string]*visitor)
 	mu       sync.Mutex
+	cfg      config.Config
 }
 
-func New(ipParser ipparser.IpParser) *service {
+func New(ipParser ipparser.IpParser, cfg config.Config) *service {
 	return &service{
 		ipParser: ipParser,
 		visitors: make(map[string]*visitor),
+		cfg:      cfg,
 	}
 }
 
