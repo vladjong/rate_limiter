@@ -28,6 +28,7 @@ func New(mask int8) *ipParser {
 	}
 }
 
+// функция для перевода хоста к маски подсети в 10 виде
 func getMask(in int8) []uint64 {
 	mask := (MAX_SIZE << (MAX_MASK - in)) & MAX_SIZE
 	tempMask := MAX_MASK
@@ -40,6 +41,7 @@ func getMask(in int8) []uint64 {
 	return localmask
 }
 
+// функция для парсинга ip адресса в слайс из 4 октетов
 func parseIP(in string) ([]uint64, error) {
 	arr := strings.Split(in, ".")
 	ipArr := make([]uint64, SIZE_IP)
@@ -53,6 +55,7 @@ func parseIP(in string) ([]uint64, error) {
 	return ipArr, nil
 }
 
+// метод для определения подсети для ip адресса
 func (ip *ipParser) GetParentIp(in string) (string, error) {
 	ipArr, err := parseIP(in)
 

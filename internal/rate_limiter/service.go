@@ -25,10 +25,13 @@ func New(ipParser ipparser.IpParser, cfg config.Config) *service {
 	}
 }
 
+// метод запуск сервиса
 func (s *service) Run() {
+	// фоновая задача, которая обновляет доступ пользователя к сервису
 	go s.cleanupVisitors()
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	// middleware для ограничения количества запросов
 	r.Use(s.limit)
 	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("PING-PONG"))
