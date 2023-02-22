@@ -15,7 +15,7 @@ const (
 )
 
 type IpParser interface {
-	GetParentIp(mask, ip []uint64) (string, error)
+	GetParentIp(in string) (string, error)
 }
 
 type ipParser struct {
